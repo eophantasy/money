@@ -1,0 +1,100 @@
+<?php
+
+/*
+ * This file is part of the Eophantasy package.
+ *
+ * (c) Ilya Sitnikov <sitnikovik@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Eophantasy\Money\Money;
+
+use Eophantasy\Money\Currency\Currency;
+use Eophantasy\Money\Currency\Dollars as CurrencyDollars;
+use Eophantasy\Money\Money;
+
+/**
+ * Represents a money object in US dollars.
+ *
+ * This class implements the Money interface and provides methods to
+ * access the currency, units, and nanos of the money object.
+ */
+final class Dollars implements Money
+{
+    /**
+     * The currency instance.
+     *
+     * @var Currency
+     */
+    private Currency $currency;
+
+    /**
+     * Creates a new instance of the Dollars class.
+     * 
+     * @param int $units The number of units.
+     * @param int $nanos The number of nanos.
+     * @param Currency $currency The currency of the money object.
+     */
+    public function __construct(
+        private int $units,
+        private int $nanos,
+    ) {
+        $this->currency = new CurrencyDollars();
+    }
+
+    /**
+     * Returns the currency of the money object.
+     * 
+     * @return Currency
+     */
+    public function currency(): Currency
+    {
+        return $this->currency;
+    }
+
+    /**
+     * Returns the number of units in the money object.
+     * 
+     * For example, if the money object represents 100.50 dollars,
+     * this method will return 100.
+     * 
+     * @return int
+     */
+    public function units(): int
+    {
+        return $this->units;
+    }
+
+    /**
+     * Returns the number of nanos in the money object.
+     * 
+     * For example, if the money object represents 100.50 dollars,
+     * this method will return 50 in cents value.
+     * 
+     * @return int
+     */
+    public function nanos(): int
+    {
+        return $this->nanos;
+    }
+
+    /**
+     * Returns a string representation of the money object.
+     * 
+     * For example, if the money object represents 100.50 dollars,
+     * this method will return "100.50 $".
+     * 
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return sprintf(
+            '%d.%d %s',
+            $this->units,
+            $this->nanos,
+            $this->currency->symbol(),
+        );
+    }
+}
