@@ -9,6 +9,10 @@
  * file that was distributed with this source code.
  */
 
+namespace Eophantasy\Money\Currency;
+
+use Eophantasy\Money\Money;
+
 /**
  * Represents an exchanger for money.
  */

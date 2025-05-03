@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+namespace Eophantasy\Money\Currency;
+
 /**
  * Represents rubbles currency for a money object.
  */
