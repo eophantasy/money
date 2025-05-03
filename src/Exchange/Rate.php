@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+namespace Eophantasy\Money\Exchange;
+
 /**
  * Represents a rate for currency exchange.
  *
