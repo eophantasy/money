@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Eophantasy\Money\Money;
+namespace Eophantasy\Money;
 
 use Eophantasy\Money\Currency\Currency;
 use Eophantasy\Money\Currency\Dollars as CurrencyDollars;
