@@ -12,12 +12,12 @@
 namespace Eophantasy\Money;
 
 use Eophantasy\Money\Currency\Currency;
-use Eophantasy\Money\Currency\Rubbles as RubblesCurrency;
+use Eophantasy\Money\Currency\Rubles as RublesCurrency;
 
 /**
- * Represents money in rubbles currency.
+ * Represents money in rubles currency.
  */
-final class Rubbles implements Money
+final class Rubles implements Money
 {
     /**
      * The currency instance.
@@ -27,7 +27,7 @@ final class Rubbles implements Money
     private Currency $currency;
 
     /**
-     * Creates a new instance of the Rubbles class.
+     * Creates a new instance of the Rubles class.
      * 
      * @param int $units The number of units.
      * @param int $nanos The number of nanos.
@@ -36,7 +36,7 @@ final class Rubbles implements Money
         private int $units,
         private int $nanos,
     ) {
-        $this->currency = new RubblesCurrency();
+        $this->currency = new RublesCurrency();
     }
 
     /**

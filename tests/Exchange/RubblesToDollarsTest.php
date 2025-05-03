@@ -12,21 +12,21 @@
 namespace Eophantasy\Money\Test\Exchange;
 
 use Eophantasy\Money\Exchange\Rate;
-use Eophantasy\Money\Exchange\RubblesToDollars;
-use Eophantasy\Money\Rubbles;
+use Eophantasy\Money\Exchange\RublesToDollars;
+use Eophantasy\Money\Rubles;
 
 /**
- * Class to test the conversion of rubbles to dollars.
+ * Class to test the conversion of rubles to dollars.
  * 
- * @covers \Eophantasy\Money\Exchange\RubblesToDollars
+ * @covers \Eophantasy\Money\Exchange\RublesToDollars
  */
-final class RubblesToDollarsTest extends \PHPUnit\Framework\TestCase
+final class RublesToDollarsTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * Test the conversion of rubbles to dollars.
+     * Test the conversion of rubles to dollars.
      * 
      * @return void
-     * @covers \Eophantasy\Money\Exchange\RubblesToDollars::dollars
+     * @covers \Eophantasy\Money\Exchange\RublesToDollars::dollars
      */
     public function testDollars(): void
     {
@@ -38,14 +38,14 @@ final class RubblesToDollarsTest extends \PHPUnit\Framework\TestCase
                 [1_200_000, 0, 14510, 28],
                 [1_200_500, 0, 14516, 32],
             ] as [
-                $rubblesUnits,
-                $rubblesNanos,
+                $rublesUnits,
+                $rublesNanos,
                 $dollarsUnits,
                 $dollarsNanos,
             ]
         ) {
-            $dollars = (new RubblesToDollars(
-                new Rubbles($rubblesUnits, $rubblesNanos),
+            $dollars = (new RublesToDollars(
+                new Rubles($rublesUnits, $rublesNanos),
                 $rate
             ))->dollars();
 

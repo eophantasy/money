@@ -12,21 +12,21 @@
 namespace Eophantasy\Money\Exchange;
 
 use Eophantasy\Money\Dollars;
-use Eophantasy\Money\Rubbles;
+use Eophantasy\Money\Rubles;
 
 /**
- * Class to convert Russian rubbles to US dollars.
+ * Class to convert Russian rubles to US dollars.
  */
-final class RubblesToDollars
+final class RublesToDollars
 {
     /**
-     * Creates a new instance of the RubblesToDollars class.
+     * Creates a new instance of the RublesToDollars class.
      * 
-     * @param Rubbles $dollars The rubbles object to be converted.
+     * @param Rubles $dollars The rubles object to be converted.
      * @param Rate $rate The exchange rate object.
      */
     public function __construct(
-        private Rubbles $dollars,
+        private Rubles $dollars,
         private Rate $rate
     ) {}
 
