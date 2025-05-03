@@ -14,7 +14,7 @@ namespace Eophantasy\Money\Currency;
 /**
  * Represents rubbles currency for a money object.
  */
-final class RubblesCurrency implements Currency
+final class Rubbles implements Currency
 {
     /**
      * The currency code (e.g., "RUB").
@@ -31,7 +31,7 @@ final class RubblesCurrency implements Currency
     private string $symbol;
 
     /**
-     * Creates a new instance of the RubblesCurrency class.
+     * Creates a new instance of the Rubbles class.
      */
     public function __construct()
     {

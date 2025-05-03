@@ -12,7 +12,7 @@
 namespace Eophantasy\Money;
 
 use Eophantasy\Money\Currency\Currency;
-use Eophantasy\Money\Currency\RubblesCurrency;
+use Eophantasy\Money\Currency\Rubbles as RubblesCurrency;
 
 /**
  * Represents money in rubbles currency.
