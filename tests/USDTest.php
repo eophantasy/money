@@ -11,69 +11,69 @@
 
 namespace Eophantasy\Money\Tests;
 
-use Eophantasy\Money\Dollars;
+use Eophantasy\Money\USD;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use Eophantasy\Money\Currency\Dollars as DollarsCurrency;
+use Eophantasy\Money\Currency\USD as USDCurrency;
 
 /**
- * Tests for the Dollars class.
+ * Tests for the USD class.
  *
  * @internal
- * @covers Eophantasy\Money\Dollars
+ * @covers Eophantasy\Money\USD
  */
-final class DollarsTest extends TestCase
+final class USDTest extends TestCase
 {
     /**
-     * Tests the Dollars string representation.
+     * Tests the USD string representation.
      * 
      * @return void
-     * @covers Eophantasy\Money\Dollars::__toString
+     * @covers Eophantasy\Money\USD::__toString
      */
     public function test__toString(): void
     {
-        $dollars = new Dollars(100, 0);
+        $usd = new USD(100, 0);
 
-        $this->assertEquals("$100.00", sprintf("%s", $dollars));
+        $this->assertEquals("$100.00", sprintf("%s", $usd));
     }
 
     /**
-     * Tests the Dollars currency method.
+     * Tests the USD currency method.
      * 
      * @return void
-     * @covers Eophantasy\Money\Dollars::currency
+     * @covers Eophantasy\Money\USD::currency
      */
     public function testCurrency(): void
     {
-        $dollars = new Dollars(100, 00);
+        $usd = new USD(100, 00);
 
-        $this->assertInstanceOf(DollarsCurrency::class, $dollars->currency());
+        $this->assertInstanceOf(USDCurrency::class, $usd->currency());
     }
 
     /**
-     * Tests the Dollars units method.
+     * Tests the USD units method.
      * 
      * @return void
-     * @covers Eophantasy\Money\Dollars::units
+     * @covers Eophantasy\Money\USD::units
      */
     public function testUnits(): void
     {
-        $dollars = new Dollars(100, 00);
+        $usd = new USD(100, 00);
 
-        $this->assertEquals(100, $dollars->units());
+        $this->assertEquals(100, $usd->units());
     }
 
     /**
-     * Tests the Dollars nanos method.
+     * Tests the USD nanos method.
      * 
      * @return void
-     * @covers Eophantasy\Money\Dollars::nanos
+     * @covers Eophantasy\Money\USD::nanos
      */
     public function testNanos(): void
     {
-        $dollars = new Dollars(100, 50);
+        $usd = new USD(100, 50);
 
-        $this->assertEquals(50, $dollars->nanos());
+        $this->assertEquals(50, $usd->nanos());
     }
 
     public function testNanosThrowsOnNegative(): void
@@ -81,7 +81,7 @@ final class DollarsTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage("Nanos cannot be negative.");
 
-        (new Dollars(100, -1))->nanos();
+        (new USD(100, -1))->nanos();
     }
 
     public function testNanosThrowsOnGreaterThan99(): void
@@ -89,6 +89,6 @@ final class DollarsTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage("Nanos cannot be greater than 99.");
 
-        (new Dollars(100, 100))->nanos();
+        (new USD(100, 100))->nanos();
     }
 }

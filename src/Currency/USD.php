@@ -12,9 +12,9 @@
 namespace Eophantasy\Money\Currency;
 
 /**
- * Represents US dollars currency for a money object.
+ * Represents US USD currency for a money object.
  */
-final class Dollars implements Currency
+final class USD implements Currency
 {
     /**
      * The currency code (e.g., "USD").
@@ -31,7 +31,7 @@ final class Dollars implements Currency
     private string $symbol;
 
     /**
-     * Creates a new instance of the Dollars currency class.
+     * Creates a new instance of the USD currency class.
      */
     public function __construct()
     {

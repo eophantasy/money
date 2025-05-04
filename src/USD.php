@@ -14,15 +14,15 @@ namespace Eophantasy\Money;
 use Eophantasy\Money\Money;
 use InvalidArgumentException;
 use Eophantasy\Money\Currency\Currency;
-use Eophantasy\Money\Currency\Dollars as CurrencyDollars;
+use Eophantasy\Money\Currency\USD as CurrencyUSD;
 
 /**
- * Represents a money object in US dollars.
+ * Represents a money object in US USD.
  *
  * This class implements the Money interface and provides methods to
  * access the currency, units, and nanos of the money object.
  */
-final class Dollars implements Money
+final class USD implements Money
 {
     /**
      * The currency instance.
@@ -32,7 +32,7 @@ final class Dollars implements Money
     private Currency $currency;
 
     /**
-     * Creates a new instance of the Dollars class.
+     * Creates a new instance of the USD class.
      * 
      * @param int $units The number of units.
      * @param int $nanos The number of nanos.
@@ -42,7 +42,7 @@ final class Dollars implements Money
         private int $units,
         private int $nanos,
     ) {
-        $this->currency = new CurrencyDollars();
+        $this->currency = new CurrencyUSD();
     }
 
     /**
@@ -58,7 +58,7 @@ final class Dollars implements Money
     /**
      * Returns the number of units in the money object.
      * 
-     * For example, if the money object represents 100.50 dollars,
+     * For example, if the money object represents 100.50 USD,
      * this method will return 100.
      * 
      * @return int
@@ -71,7 +71,7 @@ final class Dollars implements Money
     /**
      * Returns the number of nanos in the money object.
      * 
-     * For example, if the money object represents 100.50 dollars,
+     * For example, if the money object represents 100.50 USD,
      * this method will return 50 in cents value.
      * 
      * @return int
@@ -91,7 +91,7 @@ final class Dollars implements Money
     /**
      * Returns a string representation of the money object.
      * 
-     * For example, if the money object represents 100.50 dollars,
+     * For example, if the money object represents 100.50 USD,
      * this method will return "$100.50".
      * 
      * @return string
