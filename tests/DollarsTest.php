@@ -32,9 +32,9 @@ final class DollarsTest extends TestCase
      */
     public function test__toString(): void
     {
-        $dollars = new Dollars(100, 00);
+        $dollars = new Dollars(100, 0);
 
-        $this->assertEquals("$100.0", sprintf("%s", $dollars));
+        $this->assertEquals("$100.00", sprintf("%s", $dollars));
     }
 
     /**

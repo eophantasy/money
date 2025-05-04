@@ -34,7 +34,7 @@ final class RublesTest extends TestCase
     {
         $rubles = new Rubles(100, 00);
 
-        $this->assertEquals("100.0 руб.", sprintf("%s", $rubles));
+        $this->assertEquals("100.00 руб.", sprintf("%s", $rubles));
     }
 
     /**

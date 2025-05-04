@@ -92,17 +92,19 @@ final class Dollars implements Money
      * Returns a string representation of the money object.
      * 
      * For example, if the money object represents 100.50 dollars,
-     * this method will return "100.50 $".
+     * this method will return "$100.50".
      * 
      * @return string
      */
     public function __toString(): string
     {
         return sprintf(
-            '%s%d.%d',
+            '%s%d.%s',
             $this->currency->symbol(),
             $this->units,
-            $this->nanos,
+            $this->nanos > 9
+                ? $this->nanos . '0s'
+                : '0' . $this->nanos,
         );
     }
 }

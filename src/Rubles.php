@@ -94,10 +94,12 @@ final class Rubles implements Money
     public function __toString(): string
     {
         return sprintf(
-            "%d.%d %s",
-            $this->units(),
-            $this->nanos(),
-            $this->currency()->symbol(),
+            "%d.%s %s",
+            $this->units,
+            $this->nanos > 9
+                ? $this->nanos
+                : '0' . $this->nanos,
+            $this->currency->symbol(),
         );
     }
 }
