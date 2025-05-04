@@ -11,6 +11,7 @@
 
 namespace Eophantasy\Money;
 
+use InvalidArgumentException;
 use Eophantasy\Money\Currency\Currency;
 use Eophantasy\Money\Currency\Rubles as RublesCurrency;
 
@@ -72,6 +73,13 @@ final class Rubles implements Money
      */
     public function nanos(): int
     {
+        if ($this->nanos < 0) {
+            throw new InvalidArgumentException("Nanos cannot be negative.");
+        }
+        if ($this->nanos > 99) {
+            throw new InvalidArgumentException("Nanos cannot be greater than 99.");
+        }
+
         return $this->nanos;
     }
 
