@@ -1,1 +1,8 @@
+.idea/
+.obsidian/
+.vscode/
+.DS_Store
+.env
+.env.local
 /vendor/
+.phpunit.result.cache
