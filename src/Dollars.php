@@ -11,9 +11,10 @@
 
 namespace Eophantasy\Money;
 
+use Eophantasy\Money\Money;
+use InvalidArgumentException;
 use Eophantasy\Money\Currency\Currency;
 use Eophantasy\Money\Currency\Dollars as CurrencyDollars;
-use Eophantasy\Money\Money;
 
 /**
  * Represents a money object in US dollars.
@@ -77,6 +78,13 @@ final class Dollars implements Money
      */
     public function nanos(): int
     {
+        if ($this->nanos < 0) {
+            throw new InvalidArgumentException("Nanos cannot be negative.");
+        }
+        if ($this->nanos > 99) {
+            throw new InvalidArgumentException("Nanos cannot be greater than 99.");
+        }
+
         return $this->nanos;
     }
 
@@ -91,10 +99,10 @@ final class Dollars implements Money
     public function __toString(): string
     {
         return sprintf(
-            '%d.%d %s',
+            '%s%d.%d',
+            $this->currency->symbol(),
             $this->units,
             $this->nanos,
-            $this->currency->symbol(),
         );
     }
 }
