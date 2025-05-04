@@ -21,13 +21,6 @@ use Eophantasy\Money\Currency\RUB as RUBCurrency;
 final class RUB implements Money
 {
     /**
-     * The currency instance.
-     *
-     * @var Currency
-     */
-    private Currency $currency;
-
-    /**
      * Creates a new instance of the RUB class.
      * 
      * @param int $units The number of units.
@@ -97,7 +90,7 @@ final class RUB implements Money
             $this->nanos > 9
                 ? $this->nanos
                 : '0' . $this->nanos,
-            $this->currency->symbol(),
+            $this->currency()->symbol(),
         );
     }
 }

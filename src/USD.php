@@ -25,13 +25,6 @@ use Eophantasy\Money\Currency\USD as CurrencyUSD;
 final class USD implements Money
 {
     /**
-     * The currency instance.
-     *
-     * @var Currency
-     */
-    private Currency $currency;
-
-    /**
      * Creates a new instance of the USD class.
      * 
      * @param int $units The number of units.
@@ -98,7 +91,7 @@ final class USD implements Money
     {
         return sprintf(
             '%s%d.%s',
-            $this->currency->symbol(),
+            $this->currency()->symbol(),
             $this->units,
             $this->nanos > 9
                 ? $this->nanos . '0s'
