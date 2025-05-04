@@ -13,12 +13,12 @@ namespace Eophantasy\Money;
 
 use InvalidArgumentException;
 use Eophantasy\Money\Currency\Currency;
-use Eophantasy\Money\Currency\Rubles as RublesCurrency;
+use Eophantasy\Money\Currency\RUB as RUBCurrency;
 
 /**
- * Represents money in rubles currency.
+ * Represents money in RUB currency.
  */
-final class Rubles implements Money
+final class RUB implements Money
 {
     /**
      * The currency instance.
@@ -28,7 +28,7 @@ final class Rubles implements Money
     private Currency $currency;
 
     /**
-     * Creates a new instance of the Rubles class.
+     * Creates a new instance of the RUB class.
      * 
      * @param int $units The number of units.
      * @param int $nanos The number of nanos.
@@ -37,7 +37,7 @@ final class Rubles implements Money
         private int $units,
         private int $nanos,
     ) {
-        $this->currency = new RublesCurrency();
+        $this->currency = new RUBCurrency();
     }
 
     /**
@@ -53,7 +53,7 @@ final class Rubles implements Money
     /**
      * Returns the number of units in the money object.
      * 
-     * For example, if the money object represents 100.50 rubles,
+     * For example, if the money object represents 100.50 RUB,
      * this method will return 100.
      * 
      * @return int
@@ -66,7 +66,7 @@ final class Rubles implements Money
     /**
      * Returns the number of nanos in the money object.
      * 
-     * For example, if the money object represents 100.50 rubles,
+     * For example, if the money object represents 100.50 RUB,
      * this method will return 50 in kopeks value.
      * 
      * @return int
@@ -86,7 +86,7 @@ final class Rubles implements Money
     /**
      * Returns the string representation of the money object.
      * 
-     * For example, if the money object represents 100.50 rubles,
+     * For example, if the money object represents 100.50 RUB,
      * this method will return "100.50 руб.".
      * 
      * @return string

@@ -11,69 +11,69 @@
 
 namespace Eophantasy\Money\Tests;
 
-use Eophantasy\Money\Rubles;
+use Eophantasy\Money\RUB;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use Eophantasy\Money\Currency\Rubles as RublesCurrency;
+use Eophantasy\Money\Currency\RUB as RUBCurrency;
 
 /**
- * Tests for the Rubles class.
+ * Tests for the RUB class.
  *
  * @internal
- * @covers Eophantasy\Money\Rubles
+ * @covers Eophantasy\Money\RUB
  */
-final class RublesTest extends TestCase
+final class RUBTest extends TestCase
 {
     /**
-     * Tests the Rubles string representation.
+     * Tests the RUB string representation.
      * 
      * @return void
-     * @covers Eophantasy\Money\Rubles::__toString
+     * @covers Eophantasy\Money\RUB::__toString
      */
     public function test__toString(): void
     {
-        $rubles = new Rubles(100, 00);
+        $rub = new RUB(100, 00);
 
-        $this->assertEquals("100.00 руб.", sprintf("%s", $rubles));
+        $this->assertEquals("100.00 руб.", sprintf("%s", $rub));
     }
 
     /**
-     * Tests the Rubles currency method.
+     * Tests the RUB currency method.
      * 
      * @return void
-     * @covers Eophantasy\Money\Rubles::currency
+     * @covers Eophantasy\Money\RUB::currency
      */
     public function testCurrency(): void
     {
-        $rubles = new Rubles(100, 00);
+        $rub = new RUB(100, 00);
 
-        $this->assertInstanceOf(RublesCurrency::class, $rubles->currency());
+        $this->assertInstanceOf(RUBCurrency::class, $rub->currency());
     }
 
     /**
-     * Tests the Rubles units method.
+     * Tests the RUB units method.
      * 
      * @return void
-     * @covers Eophantasy\Money\Rubles::units
+     * @covers Eophantasy\Money\RUB::units
      */
     public function testUnits(): void
     {
-        $rubles = new Rubles(100, 00);
+        $rub = new RUB(100, 00);
 
-        $this->assertEquals(100, $rubles->units());
+        $this->assertEquals(100, $rub->units());
     }
 
     /**
-     * Tests the Rubles nanos method.
+     * Tests the RUB nanos method.
      * 
      * @return void
-     * @covers Eophantasy\Money\Rubles::nanos
+     * @covers Eophantasy\Money\RUB::nanos
      */
     public function testNanos(): void
     {
-        $rubles = new Rubles(100, 50);
+        $rub = new RUB(100, 50);
 
-        $this->assertEquals(50, $rubles->nanos());
+        $this->assertEquals(50, $rub->nanos());
     }
 
     public function testNanosThrowsOnNegative(): void
@@ -81,7 +81,7 @@ final class RublesTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage("Nanos cannot be negative.");
 
-        (new Rubles(100, -1))->nanos();
+        (new RUB(100, -1))->nanos();
     }
 
     public function testNanosThrowsOnGreaterThan99(): void
@@ -89,6 +89,6 @@ final class RublesTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage("Nanos cannot be greater than 99.");
 
-        (new Rubles(100, 100))->nanos();
+        (new RUB(100, 100))->nanos();
     }
 }
