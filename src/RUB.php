@@ -36,9 +36,7 @@ final class RUB implements Money
     public function __construct(
         private int $units,
         private int $nanos,
-    ) {
-        $this->currency = new RUBCurrency();
-    }
+    ) {}
 
     /**
      * Returns the currency of the money object.
@@ -47,7 +45,7 @@ final class RUB implements Money
      */
     public function currency(): Currency
     {
-        return $this->currency;
+        return new RUBCurrency();
     }
 
     /**

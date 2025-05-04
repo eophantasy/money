@@ -41,9 +41,7 @@ final class USD implements Money
     public function __construct(
         private int $units,
         private int $nanos,
-    ) {
-        $this->currency = new CurrencyUSD();
-    }
+    ) {}
 
     /**
      * Returns the currency of the money object.
@@ -52,7 +50,7 @@ final class USD implements Money
      */
     public function currency(): Currency
     {
-        return $this->currency;
+        return new CurrencyUSD();
     }
 
     /**
