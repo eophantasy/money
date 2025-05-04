@@ -76,6 +76,12 @@ final class RUBTest extends TestCase
         $this->assertEquals(50, $rub->nanos());
     }
 
+    /**
+     * Tests the RUB nanos method with negative value.
+     * 
+     * @return void
+     * @covers Eophantasy\Money\RUB::nanos
+     */
     public function testNanosThrowsOnNegative(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -84,6 +90,12 @@ final class RUBTest extends TestCase
         (new RUB(100, -1))->nanos();
     }
 
+    /**
+     * Tests the RUB nanos method with value greater than 99.
+     * 
+     * @return void
+     * @covers Eophantasy\Money\RUB::nanos
+     */
     public function testNanosThrowsOnGreaterThan99(): void
     {
         $this->expectException(InvalidArgumentException::class);

@@ -76,6 +76,12 @@ final class USDTest extends TestCase
         $this->assertEquals(50, $usd->nanos());
     }
 
+    /**
+     * Tests the USD equals method.
+     * 
+     * @return void
+     * @covers Eophantasy\Money\USD::equals
+     */
     public function testNanosThrowsOnNegative(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -84,6 +90,12 @@ final class USDTest extends TestCase
         (new USD(100, -1))->nanos();
     }
 
+    /**
+     * Tests the USD nanos method with greater than 99 value.
+     * 
+     * @return void
+     * @covers Eophantasy\Money\USD::nanos
+     */
     public function testNanosThrowsOnGreaterThan99(): void
     {
         $this->expectException(InvalidArgumentException::class);
