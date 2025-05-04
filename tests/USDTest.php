@@ -11,6 +11,7 @@
 
 namespace Eophantasy\Money\Tests;
 
+use Eophantasy\Money\RUB;
 use Eophantasy\Money\USD;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -102,5 +103,35 @@ final class USDTest extends TestCase
         $this->expectExceptionMessage("Nanos cannot be greater than 99.");
 
         (new USD(100, 100))->nanos();
+    }
+
+    /**
+     * Tests the RUB equals method.
+     * 
+     * @return void
+     * @covers Eophantasy\Money\RUB::equals
+     */
+    public function testEqualsOneCurrency(): void
+    {
+        $usd1 = new USD(100, 00);
+        $usd2 = new USD(200, 50);
+        $usd3 = new USD(500, 70);
+
+        $this->assertTrue($usd1->equals($usd2));
+        $this->assertFalse($usd2->equals($usd3));
+    }
+
+    /**
+     * Tests the RUB equals method with different currencies.
+     * 
+     * @return void
+     * @covers Eophantasy\Money\RUB::equals
+     */
+    public function testEqualsDifferentCurrencies(): void
+    {
+        $rub = new RUB(100, 50);
+        $usd = new USD(100, 50);
+
+        $this->assertFalse($rub->equals($usd));
     }
 }

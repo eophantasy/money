@@ -41,4 +41,12 @@ interface Money extends Stringable
      * @return int
      */
     public function nanos(): int;
+
+    /**
+     * Compares this money object with another money object.
+     * 
+     * @param Money $money The money object to compare with.
+     * @return bool True if the two money objects are equal, false otherwise.
+     */
+    public function equals(Money $money): bool;
 }

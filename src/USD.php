@@ -79,6 +79,29 @@ final class USD implements Money
         return $this->nanos;
     }
 
+        /**
+     * Checks if two money objects are equal.
+     * 
+     * This method compares the currency, units, and nanos of the two money objects.
+     * 
+     * @param Money $money The money object to compare with.
+     * @return bool True if the money objects are equal, false otherwise.
+     */
+    public function equals(Money $money): bool
+    {
+        if ($this->currency()->code() !== $money->currency()->code()) {
+            return false;
+        }
+        if ($this->units() !== $money->units()) {
+            return false;
+        }
+        if ($this->nanos() !== $money->nanos()) {
+            return false;
+        }
+
+        return true;
+    }
+
     /**
      * Returns a string representation of the money object.
      * 
