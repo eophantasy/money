@@ -11,36 +11,59 @@
 
 namespace Eophantasy\Money;
 
-use Eophantasy\Money\Currency\Currency;
 use Stringable;
+use InvalidArgumentException;
+use Eophantasy\Money\Currency\Currency;
 
 /**
- * Represents a money object.
- * 
- * This interface defines the methods that a money class should implement.
+ * Abstract class representing a money object.
  */
-interface Money extends Stringable
+abstract class Money implements Stringable
 {
+    /**
+     * Creates a new instance of the Money class.
+     * 
+     * @param int $units The number of units.
+     * @param int $nanos The number of nanos.
+     */
+    public function __construct(
+        protected int $units,
+        protected int $nanos,
+    ) {}
+
     /**
      * Returns the currency of the money object.
      * 
      * @return Currency
      */
-    public function currency(): Currency;
+    abstract public function currency(): Currency;
 
     /**
      * Returns the number of units in the money object.
      * 
      * @return int
      */
-    public function units(): int;
+    final public function units(): int
+    {
+        return $this->units;
+    }
 
     /**
      * Returns the number of nanos in the money object.
      * 
      * @return int
      */
-    public function nanos(): int;
+    final public function nanos(): int
+    {
+        if ($this->nanos < 0) {
+            throw new InvalidArgumentException("Nanos cannot be negative.");
+        }
+        if ($this->nanos > 99) {
+            throw new InvalidArgumentException("Nanos cannot be greater than 99.");
+        }
+
+        return $this->nanos;
+    }
 
     /**
      * Compares this money object with another money object.
@@ -48,5 +71,10 @@ interface Money extends Stringable
      * @param Money $money The money object to compare with.
      * @return bool True if the two money objects are equal, false otherwise.
      */
-    public function equals(Money $money): bool;
+    final public function equals(Money $money): bool
+    {
+        return $this->currency()->code() === $money->currency()->code()
+            && $this->units() === $money->units()
+            && $this->nanos() === $money->nanos();
+    }
 }
