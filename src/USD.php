@@ -12,7 +12,6 @@
 namespace Eophantasy\Money;
 
 use Eophantasy\Money\Money;
-use InvalidArgumentException;
 use Eophantasy\Money\Currency\Currency;
 use Eophantasy\Money\Currency\USD as CurrencyUSD;
 
@@ -22,20 +21,8 @@ use Eophantasy\Money\Currency\USD as CurrencyUSD;
  * This class implements the Money interface and provides methods to
  * access the currency, units, and nanos of the money object.
  */
-final class USD implements Money
+final class USD extends Money
 {
-    /**
-     * Creates a new instance of the USD class.
-     * 
-     * @param int $units The number of units.
-     * @param int $nanos The number of nanos.
-     * @param Currency $currency The currency of the money object.
-     */
-    public function __construct(
-        private int $units,
-        private int $nanos,
-    ) {}
-
     /**
      * Returns the currency of the money object.
      * 
@@ -44,62 +31,6 @@ final class USD implements Money
     public function currency(): Currency
     {
         return new CurrencyUSD();
-    }
-
-    /**
-     * Returns the number of units in the money object.
-     * 
-     * For example, if the money object represents 100.50 USD,
-     * this method will return 100.
-     * 
-     * @return int
-     */
-    public function units(): int
-    {
-        return $this->units;
-    }
-
-    /**
-     * Returns the number of nanos in the money object.
-     * 
-     * For example, if the money object represents 100.50 USD,
-     * this method will return 50 in cents value.
-     * 
-     * @return int
-     */
-    public function nanos(): int
-    {
-        if ($this->nanos < 0) {
-            throw new InvalidArgumentException("Nanos cannot be negative.");
-        }
-        if ($this->nanos > 99) {
-            throw new InvalidArgumentException("Nanos cannot be greater than 99.");
-        }
-
-        return $this->nanos;
-    }
-
-        /**
-     * Checks if two money objects are equal.
-     * 
-     * This method compares the currency, units, and nanos of the two money objects.
-     * 
-     * @param Money $money The money object to compare with.
-     * @return bool True if the money objects are equal, false otherwise.
-     */
-    public function equals(Money $money): bool
-    {
-        if ($this->currency()->code() !== $money->currency()->code()) {
-            return false;
-        }
-        if ($this->units() !== $money->units()) {
-            return false;
-        }
-        if ($this->nanos() !== $money->nanos()) {
-            return false;
-        }
-
-        return true;
     }
 
     /**
