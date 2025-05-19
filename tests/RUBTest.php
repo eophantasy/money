@@ -134,4 +134,174 @@ final class RUBTest extends TestCase
 
         $this->assertFalse($rub->equals($usd));
     }
+
+    /**
+     * Tests the RUB add method.
+     *
+     * @return void
+     * @covers Eophantasy\Money\RUB::add
+     */
+    public function testMoneyAdd(): void
+    {
+        $rub1 = new RUB(100, 50);
+        $rub2 = new RUB(20, 20);
+
+        $result = $rub1->add($rub2);
+
+        $this->assertTrue($result);
+        $this->assertEquals($rub1->units(), 120);
+        $this->assertEquals($rub1->nanos(), 70);
+    }
+
+    /**
+     * Tests the RUB add method with different currencies.
+     *
+     * @return void
+     * @covers Eophantasy\Money\RUB::add
+     */
+    public function testMoneyAddWithDifferentCurrencies(): void
+    {
+        $rub1 = new RUB(100, 50);
+        $usd1 = new USD(20, 20);
+
+        $result = $rub1->add($usd1);
+
+        $this->assertFalse($result);
+    }
+
+    /**
+     * Tests the RUB add method with nanos overflow.
+     *
+     * @return void
+     * @covers Eophantasy\Money\RUB::add
+     */
+    public function testMoneyAddWithNanosOverflow(): void
+    {
+        $rub1 = new RUB(100, 50);
+        $rub2 = new RUB(100, 52);
+
+        $result = $rub1->add($rub2);
+
+        $this->assertTrue($result);
+        $this->assertEquals($rub1->units(), 201);
+        $this->assertEquals($rub1->nanos(), 2);
+    }
+
+    /**
+     * Tests the RUB subtract method.
+     *
+     * @return void
+     * @covers Eophantasy\Money\RUB::subtract
+     */
+    public function testMoneySubtract(): void
+    {
+        $rub1 = new RUB(100, 50);
+        $rub2 = new RUB(50, 20);
+
+        $result = $rub1->subtract($rub2);
+
+        $this->assertTrue($result);
+        $this->assertEquals($rub1->units(), 50);
+        $this->assertEquals($rub1->nanos(), 30);
+    }
+
+    /**
+     * Tests the RUB subtract method with different currencies.
+     *
+     * @return void
+     * @covers Eophantasy\Money\RUB::subtract
+     */
+    public function testMoneySubtractWithDifferentCurrencies(): void
+    {
+        $rub1 = new RUB(100, 50);
+        $usd1 = new USD(50, 20);
+
+        $result = $rub1->subtract($usd1);
+
+        $this->assertFalse($result);
+    }
+
+    /**
+     * Tests the RUB subtract method with nanos overflow.
+     *
+     * @return void
+     * @covers Eophantasy\Money\RUB::subtract
+     */
+    public function testMoneySubtractWithNanosOverflow(): void
+    {
+        $rub1 = new RUB(100, 50);
+        $rub2 = new RUB(50, 70);
+
+        $result = $rub1->subtract($rub2);
+
+        $this->assertTrue($result);
+        $this->assertEquals($rub1->units(), 49);
+        $this->assertEquals($rub1->nanos(), 80);
+    }
+
+    /**
+     * Tests the RUB multiply method.
+     *
+     * @return void
+     * @covers Eophantasy\Money\RUB::multiply
+     */
+    public function testMoneyMultiply(): void
+    {
+        $rub1 = new RUB(20, 30);
+
+        $result = $rub1->multiply(3);
+
+        $this->assertTrue($result);
+        $this->assertEquals($rub1->units(), 60);
+        $this->assertEquals($rub1->nanos(), 90);
+    }
+
+    /**
+     * Tests the RUB multiply method with nanos overflow.
+     *
+     * @return void
+     * @covers Eophantasy\Money\RUB::multiply
+     */
+    public function testMoneyMultiplyWithNanosOverflow(): void
+    {
+        $rub1 = new RUB(100, 50);
+
+        $result = $rub1->multiply(2);
+
+        $this->assertTrue($result);
+        $this->assertEquals($rub1->units(), 201);
+        $this->assertEquals($rub1->nanos(), 0);
+    }
+
+    /**
+     * Tests the RUB divide method.
+     *
+     * @return void
+     * @covers Eophantasy\Money\RUB::divide
+     */
+    public function testMoneyDivide(): void
+    {
+        $rub1 = new RUB(20, 30);
+
+        $result = $rub1->divide(2);
+
+        $this->assertTrue($result);
+        $this->assertEquals($rub1->units(), 10);
+        $this->assertEquals($rub1->nanos(), 15);
+    }
+
+    /**
+     * Tests the RUB divide method with zero as argument is fail.
+     *
+     * @return void
+     * @covers Eophantasy\Money\RUB::divide
+     */
+    public function testMoneyDivideByZero(): void
+    {
+        $rub1 = new RUB(20, 30);
+
+        $result = $rub1->divide(0);
+
+        $this->assertFalse($result);
+    }
 }

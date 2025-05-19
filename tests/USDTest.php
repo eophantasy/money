@@ -134,4 +134,174 @@ final class USDTest extends TestCase
 
         $this->assertFalse($rub->equals($usd));
     }
+
+    /**
+     * Tests the USD add method.
+     *
+     * @return void
+     * @covers Eophantasy\Money\USD::add
+     */
+    public function testMoneyAdd(): void
+    {
+        $usd1 = new USD(100, 50);
+        $usd2 = new USD(20, 20);
+
+        $result = $usd1->add($usd2);
+
+        $this->assertTrue($result);
+        $this->assertEquals($usd1->units(), 120);
+        $this->assertEquals($usd1->nanos(), 70);
+    }
+
+    /**
+     * Tests the USD add method with different currencies.
+     *
+     * @return void
+     * @covers Eophantasy\Money\USD::add
+     */
+    public function testMoneyAddWithDifferentCurrencies(): void
+    {
+        $usd1 = new USD(100, 50);
+        $rub1 = new RUB(20, 20);
+
+        $result = $usd1->add($rub1);
+
+        $this->assertFalse($result);
+    }
+
+    /**
+     * Tests the USD add method with nanos overflow.
+     *
+     * @return void
+     * @covers Eophantasy\Money\USD::add
+     */
+    public function testMoneyAddWithNanosOverflow(): void
+    {
+        $usd1 = new USD(100, 50);
+        $usd2 = new USD(100, 52);
+
+        $result = $usd1->add($usd2);
+
+        $this->assertTrue($result);
+        $this->assertEquals($usd1->units(), 201);
+        $this->assertEquals($usd1->nanos(), 2);
+    }
+
+    /**
+     * Tests the USD subtract method.
+     *
+     * @return void
+     * @covers Eophantasy\Money\USD::subtract
+     */
+    public function testMoneySubtract(): void
+    {
+        $usd1 = new USD(100, 50);
+        $usd2 = new USD(50, 20);
+
+        $result = $usd1->subtract($usd2);
+
+        $this->assertTrue($result);
+        $this->assertEquals($usd1->units(), 50);
+        $this->assertEquals($usd1->nanos(), 30);
+    }
+
+    /**
+     * Tests the USD subtract method with different currencies.
+     *
+     * @return void
+     * @covers Eophantasy\Money\USD::subtract
+     */
+    public function testMoneySubtractWithDifferentCurrencies(): void
+    {
+        $usd1 = new USD(100, 50);
+        $rub1 = new RUB(50, 20);
+
+        $result = $usd1->subtract($rub1);
+
+        $this->assertFalse($result);
+    }
+
+    /**
+     * Tests the USD subtract method with nanos overflow.
+     *
+     * @return void
+     * @covers Eophantasy\Money\USD::subtract
+     */
+    public function testMoneySubtractWithNanosOverflow(): void
+    {
+        $usd1 = new USD(100, 50);
+        $usd2 = new USD(50, 70);
+
+        $result = $usd1->subtract($usd2);
+
+        $this->assertTrue($result);
+        $this->assertEquals($usd1->units(), 49);
+        $this->assertEquals($usd1->nanos(), 80);
+    }
+
+    /**
+     * Tests the USD multiply method.
+     *
+     * @return void
+     * @covers Eophantasy\Money\USD::multiply
+     */
+    public function testMoneyMultiply(): void
+    {
+        $usd1 = new USD(20, 30);
+
+        $result = $usd1->multiply(3);
+
+        $this->assertTrue($result);
+        $this->assertEquals($usd1->units(), 60);
+        $this->assertEquals($usd1->nanos(), 90);
+    }
+
+    /**
+     * Tests the USD multiply method with nanos overflow.
+     *
+     * @return void
+     * @covers Eophantasy\Money\USD::multiply
+     */
+    public function testMoneyMultiplyWithNanosOverflow(): void
+    {
+        $usd1 = new USD(100, 50);
+
+        $result = $usd1->multiply(2);
+
+        $this->assertTrue($result);
+        $this->assertEquals($usd1->units(), 201);
+        $this->assertEquals($usd1->nanos(), 0);
+    }
+
+    /**
+     * Tests the USD divide method.
+     *
+     * @return void
+     * @covers Eophantasy\Money\USD::divide
+     */
+    public function testMoneyDivide(): void
+    {
+        $usd1 = new USD(20, 30);
+
+        $result = $usd1->divide(2);
+
+        $this->assertTrue($result);
+        $this->assertEquals($usd1->units(), 10);
+        $this->assertEquals($usd1->nanos(), 15);
+    }
+
+    /**
+     * Tests the USD divide method with zero as argument is fail.
+     *
+     * @return void
+     * @covers Eophantasy\Money\USD::divide
+     */
+    public function testMoneyDivideByZero(): void
+    {
+        $usd1 = new USD(20, 30);
+
+        $result = $usd1->divide(0);
+
+        $this->assertFalse($result);
+    }
 }

@@ -20,6 +20,9 @@ use Eophantasy\Money\Currency\Currency;
  */
 abstract class Money implements Stringable
 {
+    private const MIN_NANOS = 0;
+    private const MAX_NANOS = 99;
+
     /**
      * Creates a new instance of the Money class.
      * 
@@ -76,5 +79,96 @@ abstract class Money implements Stringable
         return $this->currency()->code() === $money->currency()->code()
             && $this->units() === $money->units()
             && $this->nanos() === $money->nanos();
+    }
+
+    /**
+     * Add another money to current instance.
+     *
+     * @param Money $money The money object to add.
+     * @return bool True if addition was successfull, false otherwise.
+     */
+    final public function add(Money $money): bool
+    {
+        if ($this->currency()->code() !== $money->currency()->code()) {
+            return false;
+        }
+
+        $this->units += $money->units();
+
+        $nextNanos = $this->nanos + $money->nanos();
+
+        if ($nextNanos > self::MAX_NANOS) {
+            $toUnits = (int) ($nextNanos / 100);
+            $this->units += $toUnits;
+            $nextNanos -= 100 * $toUnits;
+        }
+
+        $this->nanos = $nextNanos;
+
+        return true;
+    }
+
+    /**
+     * Subtract money from current instance.
+     *
+     * @param Money $money The money object to substract.
+     * @return boolean True if substraction was successfull, false otherwise.
+     */
+    final public function subtract(Money $money): bool
+    {
+        if ($this->currency()->code() !== $money->currency()->code()) {
+            return false;
+        }
+
+        $this->units -= $money->units();
+        $this->nanos -= $money->nanos();
+
+        if ($this->nanos < self::MIN_NANOS) {
+            $this->units--;
+            $this->nanos = 100 + $this->nanos;
+        }
+
+        return true;
+    }
+
+    /**
+     * Multiply money by specific amount.
+     *
+     * @param float $amount Amount to multiply.
+     * @return bool True if multiplication was successfull, false otherwise.
+     */
+    final public function multiply(float $amount): bool
+    {
+        $this->units = (int) round($this->units * $amount);
+
+        $nextNanos = (int) round($this->nanos * $amount);
+        
+        if ($nextNanos > self::MAX_NANOS) {
+            $toUnits = (int) ($nextNanos / 100);
+            $this->units += $toUnits;
+            $nextNanos -= 100 * $toUnits;
+        }
+
+        $this->nanos = $nextNanos;
+
+        return true;
+    }
+
+    /**
+     * Divide money by specific divider.
+     *
+     * @param float $divider Divider to divide.
+     * @return boolean True if division was successfull, false otherwise.
+     */
+    final public function divide(float $divider): bool
+    {
+        if ($divider === 0.0) {
+            return false;
+        }
+
+        $this->units = (int) round($this->units / $divider);
+        $this->nanos = (int) round($this->nanos / $divider);
+
+        return true;
     }
 }
