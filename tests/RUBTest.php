@@ -134,4 +134,191 @@ final class RUBTest extends TestCase
 
         $this->assertFalse($rub->equals($usd));
     }
+
+    /**
+     * Tests the RUB add method.
+     *
+     * @return void
+     * @covers Eophantasy\Money\RUB::add
+     */
+    public function testMoneyAdd(): void
+    {
+        $rub1 = new RUB(100, 50);
+        $rub2 = new RUB(20, 20);
+
+        $result = $rub1->add($rub2);
+
+        $this->assertInstanceOf(RUB::class, $result);
+        $this->assertNotSame($result, $rub1);
+
+        $this->assertEquals($result->units(), 120);
+        $this->assertEquals($result->nanos(), 70);
+    }
+
+    /**
+     * Tests the RUB add method with different currencies.
+     *
+     * @return void
+     * @covers Eophantasy\Money\RUB::add
+     */
+    public function testMoneyAddWithDifferentCurrencies(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Currency code of the provided $money instance not the same');
+
+        $rub1 = new RUB(100, 50);
+        $usd1 = new USD(20, 20);
+
+        $rub1->add($usd1);
+    }
+
+    /**
+     * Tests the RUB add method with nanos overflow.
+     *
+     * @return void
+     * @covers Eophantasy\Money\RUB::add
+     */
+    public function testMoneyAddWithNanosOverflow(): void
+    {
+        $rub1 = new RUB(100, 50);
+        $rub2 = new RUB(100, 52);
+
+        $result = $rub1->add($rub2);
+
+        $this->assertInstanceOf(RUB::class, $result);
+        $this->assertNotSame($result, $rub1);
+
+        $this->assertEquals($result->units(), 201);
+        $this->assertEquals($result->nanos(), 2);
+    }
+
+    /**
+     * Tests the RUB subtract method.
+     *
+     * @return void
+     * @covers Eophantasy\Money\RUB::subtract
+     */
+    public function testMoneySubtract(): void
+    {
+        $rub1 = new RUB(100, 50);
+        $rub2 = new RUB(50, 20);
+
+        $result = $rub1->subtract($rub2);
+
+        $this->assertInstanceOf(RUB::class, $result);
+        $this->assertNotSame($result, $rub1);
+
+        $this->assertEquals($result->units(), 50);
+        $this->assertEquals($result->nanos(), 30);
+    }
+
+    /**
+     * Tests the RUB subtract method with different currencies.
+     *
+     * @return void
+     * @covers Eophantasy\Money\RUB::subtract
+     */
+    public function testMoneySubtractWithDifferentCurrencies(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Currency code of the provided $money instance not the same');
+
+        $rub1 = new RUB(100, 50);
+        $usd1 = new USD(50, 20);
+
+        $rub1->subtract($usd1);
+    }
+
+    /**
+     * Tests the RUB subtract method with nanos overflow.
+     *
+     * @return void
+     * @covers Eophantasy\Money\RUB::subtract
+     */
+    public function testMoneySubtractWithNanosOverflow(): void
+    {
+        $rub1 = new RUB(100, 50);
+        $rub2 = new RUB(50, 70);
+
+        $result = $rub1->subtract($rub2);
+
+        $this->assertInstanceOf(RUB::class, $result);
+        $this->assertNotSame($result, $rub1);
+
+        $this->assertEquals($result->units(), 49);
+        $this->assertEquals($result->nanos(), 80);
+    }
+
+    /**
+     * Tests the RUB multiply method.
+     *
+     * @return void
+     * @covers Eophantasy\Money\RUB::multiply
+     */
+    public function testMoneyMultiply(): void
+    {
+        $rub1 = new RUB(20, 30);
+
+        $result = $rub1->multiply(3);
+
+        $this->assertInstanceOf(RUB::class, $result);
+        $this->assertNotSame($result, $rub1);
+
+        $this->assertEquals($result->units(), 60);
+        $this->assertEquals($result->nanos(), 90);
+    }
+
+    /**
+     * Tests the RUB multiply method with nanos overflow.
+     *
+     * @return void
+     * @covers Eophantasy\Money\RUB::multiply
+     */
+    public function testMoneyMultiplyWithNanosOverflow(): void
+    {
+        $rub1 = new RUB(100, 50);
+
+        $result = $rub1->multiply(2);
+
+        $this->assertInstanceOf(RUB::class, $result);
+        $this->assertNotSame($result, $rub1);
+
+        $this->assertEquals($result->units(), 201);
+        $this->assertEquals($result->nanos(), 0);
+    }
+
+    /**
+     * Tests the RUB divide method.
+     *
+     * @return void
+     * @covers Eophantasy\Money\RUB::divide
+     */
+    public function testMoneyDivide(): void
+    {
+        $rub1 = new RUB(20, 30);
+
+        $result = $rub1->divide(2);
+
+        $this->assertInstanceOf(RUB::class, $result);
+        $this->assertNotSame($result, $rub1);
+
+        $this->assertEquals($result->units(), 10);
+        $this->assertEquals($result->nanos(), 15);
+    }
+
+    /**
+     * Tests the RUB divide method with zero as argument is fail.
+     *
+     * @return void
+     * @covers Eophantasy\Money\RUB::divide
+     */
+    public function testMoneyDivideByZero(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('$divider cannot be zero');
+
+        $rub1 = new RUB(20, 30);
+
+        $rub1->divide(0);
+    }
 }

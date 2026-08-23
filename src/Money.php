@@ -21,6 +21,20 @@ use Eophantasy\Money\Currency\Currency;
 abstract class Money implements Stringable
 {
     /**
+     * Minimum allowed value for nanos
+     *
+     * @var int
+     */
+    private const MIN_NANOS = 0;
+
+    /**
+     * Maximum allowed value for nanos
+     *
+     * @var int
+     */
+    private const MAX_NANOS = 99;
+
+    /**
      * Creates a new instance of the Money class.
      * 
      * @param int $units The number of units.
@@ -76,5 +90,110 @@ abstract class Money implements Stringable
         return $this->currency()->code() === $money->currency()->code()
             && $this->units() === $money->units()
             && $this->nanos() === $money->nanos();
+    }
+
+    /**
+     * Add another money to current instance.
+     *
+     * @param Money $money The money object to add.
+     * @return static New instance
+     * 
+     * @throws InvalidArgumentException On invalid arguments
+     */
+    final public function add(Money $money): static
+    {
+        if ($this->currency()->code() !== $money->currency()->code()) {
+            throw new InvalidArgumentException('Currency code of the provided $money instance not the same');
+        }
+
+        $instance = new static($this->units, $this->nanos);
+
+        $instance->units += $money->units();
+
+        $nextNanos = $instance->nanos + $money->nanos();
+
+        if ($nextNanos > self::MAX_NANOS) {
+            $toUnits = (int) ($nextNanos / 100);
+            $instance->units += $toUnits;
+            $nextNanos -= 100 * $toUnits;
+        }
+
+        $instance->nanos = $nextNanos;
+
+        return $instance;
+    }
+
+    /**
+     * Subtract money from current instance.
+     *
+     * @param Money $money The money object to substract.
+     * @return static New instance
+     * 
+     * @throws InvalidArgumentException On invalid arguments
+     */
+    final public function subtract(Money $money): static
+    {
+        if ($this->currency()->code() !== $money->currency()->code()) {
+            throw new InvalidArgumentException('Currency code of the provided $money instance not the same');
+        }
+
+        $instance = new static($this->units, $this->nanos);
+
+        $instance->units -= $money->units();
+        $instance->nanos -= $money->nanos();
+
+        if ($instance->nanos < self::MIN_NANOS) {
+            $instance->units--;
+            $instance->nanos = 100 + $instance->nanos;
+        }
+
+        return $instance;
+    }
+
+    /**
+     * Multiply money by specific amount.
+     *
+     * @param float $amount Amount to multiply.
+     * @return static New instance
+     */
+    final public function multiply(float $amount): static
+    {
+        $instance = new static($this->units, $this->nanos);
+
+        $instance->units = (int) round($this->units * $amount);
+
+        $nextNanos = (int) round($this->nanos * $amount);
+        
+        if ($nextNanos > self::MAX_NANOS) {
+            $toUnits = (int) ($nextNanos / 100);
+            $instance->units += $toUnits;
+            $nextNanos -= 100 * $toUnits;
+        }
+
+        $instance->nanos = $nextNanos;
+
+        return $instance;
+    }
+
+    /**
+     * Divide money by specific divider.
+     *
+     * @param float $divider Divider to divide.
+     * @return static New instance
+     * 
+     * @throws InvalidArgumentException If divider is zero
+     */
+    final public function divide(float $divider): static
+    {
+        if ($divider === 0.0) {
+            throw new InvalidArgumentException('$divider cannot be zero');
+        }
+
+        $instance = new static($this->units, $this->nanos);
+
+        $instance->units = (int) round($this->units / $divider);
+        $instance->nanos = (int) round($this->nanos / $divider);
+
+        return $instance;
     }
 }

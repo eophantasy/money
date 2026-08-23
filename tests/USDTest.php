@@ -114,7 +114,7 @@ final class USDTest extends TestCase
     public function testEqualsOneCurrency(): void
     {
         $usd1 = new USD(100, 00);
-        $usd2 = new USD(200, 50);
+        $usd2 = new USD(100, 00);
         $usd3 = new USD(500, 70);
 
         $this->assertTrue($usd1->equals($usd2));
@@ -133,5 +133,192 @@ final class USDTest extends TestCase
         $usd = new USD(100, 50);
 
         $this->assertFalse($rub->equals($usd));
+    }
+
+    /**
+     * Tests the USD add method.
+     *
+     * @return void
+     * @covers Eophantasy\Money\USD::add
+     */
+    public function testMoneyAdd(): void
+    {
+        $usd1 = new USD(100, 50);
+        $usd2 = new USD(20, 20);
+
+        $result = $usd1->add($usd2);
+
+        $this->assertInstanceOf(USD::class, $result);
+        $this->assertNotSame($result, $usd1);
+
+        $this->assertEquals($result->units(), 120);
+        $this->assertEquals($result->nanos(), 70);
+    }
+
+    /**
+     * Tests the USD add method with different currencies.
+     *
+     * @return void
+     * @covers Eophantasy\Money\USD::add
+     */
+    public function testMoneyAddWithDifferentCurrencies(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Currency code of the provided $money instance not the same');
+
+        $usd1 = new USD(100, 50);
+        $rub1 = new RUB(20, 20);
+
+        $usd1->add($rub1);
+    }
+
+    /**
+     * Tests the USD add method with nanos overflow.
+     *
+     * @return void
+     * @covers Eophantasy\Money\USD::add
+     */
+    public function testMoneyAddWithNanosOverflow(): void
+    {
+        $usd1 = new USD(100, 50);
+        $usd2 = new USD(100, 52);
+
+        $result = $usd1->add($usd2);
+
+        $this->assertInstanceOf(USD::class, $result);
+        $this->assertNotSame($result, $usd1);
+
+        $this->assertEquals($result->units(), 201);
+        $this->assertEquals($result->nanos(), 2);
+    }
+
+    /**
+     * Tests the USD subtract method.
+     *
+     * @return void
+     * @covers Eophantasy\Money\USD::subtract
+     */
+    public function testMoneySubtract(): void
+    {
+        $usd1 = new USD(100, 50);
+        $usd2 = new USD(50, 20);
+
+        $result = $usd1->subtract($usd2);
+
+        $this->assertInstanceOf(USD::class, $result);
+        $this->assertNotSame($result, $usd1);
+
+        $this->assertEquals($result->units(), 50);
+        $this->assertEquals($result->nanos(), 30);
+    }
+
+    /**
+     * Tests the USD subtract method with different currencies.
+     *
+     * @return void
+     * @covers Eophantasy\Money\USD::subtract
+     */
+    public function testMoneySubtractWithDifferentCurrencies(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Currency code of the provided $money instance not the same');
+
+        $usd1 = new USD(100, 50);
+        $rub1 = new RUB(50, 20);
+
+        $usd1->subtract($rub1);
+    }
+
+    /**
+     * Tests the USD subtract method with nanos overflow.
+     *
+     * @return void
+     * @covers Eophantasy\Money\USD::subtract
+     */
+    public function testMoneySubtractWithNanosOverflow(): void
+    {
+        $usd1 = new USD(100, 50);
+        $usd2 = new USD(50, 70);
+
+        $result = $usd1->subtract($usd2);
+
+        $this->assertInstanceOf(USD::class, $result);
+        $this->assertNotSame($result, $usd1);
+
+        $this->assertEquals($result->units(), 49);
+        $this->assertEquals($result->nanos(), 80);
+    }
+
+    /**
+     * Tests the USD multiply method.
+     *
+     * @return void
+     * @covers Eophantasy\Money\USD::multiply
+     */
+    public function testMoneyMultiply(): void
+    {
+        $usd1 = new USD(20, 30);
+
+        $result = $usd1->multiply(3);
+
+        $this->assertInstanceOf(USD::class, $result);
+        $this->assertNotSame($result, $usd1);
+
+        $this->assertEquals($result->units(), 60);
+        $this->assertEquals($result->nanos(), 90);
+    }
+
+    /**
+     * Tests the USD multiply method with nanos overflow.
+     *
+     * @return void
+     * @covers Eophantasy\Money\USD::multiply
+     */
+    public function testMoneyMultiplyWithNanosOverflow(): void
+    {
+        $usd1 = new USD(100, 50);
+
+        $result = $usd1->multiply(2);
+
+        $this->assertInstanceOf(USD::class, $result);
+        $this->assertNotSame($result, $usd1);
+
+        $this->assertEquals($result->units(), 201);
+        $this->assertEquals($result->nanos(), 0);
+    }
+
+    /**
+     * Tests the USD divide method.
+     *
+     * @return void
+     * @covers Eophantasy\Money\USD::divide
+     */
+    public function testMoneyDivide(): void
+    {
+        $usd1 = new USD(20, 30);
+
+        $result = $usd1->divide(2);
+
+        $this->assertInstanceOf(USD::class, $result);
+        $this->assertNotSame($result, $usd1);
+
+        $this->assertEquals($result->units(), 10);
+        $this->assertEquals($result->nanos(), 15);
+    }
+
+    /**
+     * Tests the USD divide method with zero as argument is fail.
+     *
+     * @return void
+     * @covers Eophantasy\Money\USD::divide
+     */
+    public function testMoneyDivideByZero(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('$divider cannot be zero');
+
+        $usd1 = new USD(20, 30);
+
+        $usd1->divide(0);
     }
 }
